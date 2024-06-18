@@ -3,6 +3,8 @@ import 'package:app/page/registro.dart';
 import 'package:app/services/usuarios.dart';
 
 class LoginScreen extends StatefulWidget {
+  const LoginScreen({super.key});
+
   @override
   _LoginScreenState createState() => _LoginScreenState();
 }
@@ -19,24 +21,25 @@ class _LoginScreenState extends State<LoginScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Iniciar sesión'),
+        title: const Text('Iniciar sesión'),
+        backgroundColor: Colors.blue, // Cambia esto al color que prefieras.
       ),
       body: Padding(
-        padding: EdgeInsets.all(16.0),
+        padding: const EdgeInsets.all(16.0),
         child: Form(
           key: _formKey,
           child: Column(
             children: <Widget>[
               TextFormField(
-                decoration: InputDecoration(labelText: 'Email'),
+                decoration: const InputDecoration(labelText: 'Email'),
                 validator: (val) => val!.isEmpty ? 'Ingresa un email' : null,
                 onChanged: (val) {
                   setState(() => email = val);
                 },
               ),
-              SizedBox(height: 20.0),
+              const SizedBox(height: 20.0),
               TextFormField(
-                decoration: InputDecoration(labelText: 'Contraseña'),
+                decoration: const InputDecoration(labelText: 'Contraseña'),
                 obscureText: true,
                 validator: (val) => val!.length < 6
                     ? 'La contraseña debe tener al menos 6 caracteres'
@@ -45,9 +48,9 @@ class _LoginScreenState extends State<LoginScreen> {
                   setState(() => password = val);
                 },
               ),
-              SizedBox(height: 20.0),
+              const SizedBox(height: 20.0),
               isLoading // Mostrar un indicador de carga si isLoading es true
-                  ? CircularProgressIndicator()
+                  ? const CircularProgressIndicator()
                   : ElevatedButton(
                       onPressed: () async {
                         if (_formKey.currentState!.validate()) {
@@ -69,12 +72,18 @@ class _LoginScreenState extends State<LoginScreen> {
                           }
                         }
                       },
-                      child: Text('Iniciar sesión'),
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor:
+                            Colors.green, // Cambia esto al color que prefieras.
+                      ),
+                      child: const Text('Iniciar sesión'),
                     ),
-              SizedBox(height: 12.0),
+              const SizedBox(height: 12.0),
               Text(
                 error,
-                style: TextStyle(color: Colors.red, fontSize: 14.0),
+                style: const TextStyle(
+                    color: Color.fromRGBO(255, 152, 0, 1),
+                    fontSize: 14.0), // Cambia esto al color que prefieras.
               ),
               TextButton(
                 onPressed: () {
@@ -83,13 +92,13 @@ class _LoginScreenState extends State<LoginScreen> {
                     MaterialPageRoute(builder: (context) => RegisterScreen()),
                   );
                 },
-                child: Text('¿No tienes cuenta? Regístrate aquí'),
+                child: const Text('¿No tienes cuenta? Regístrate aquí'),
               ),
               TextButton(
                 onPressed: () {
                   _auth.resetPassword(email); // Restablecer contraseña
                 },
-                child: Text('¿Olvidaste tu contraseña?'),
+                child: const Text('¿Olvidaste tu contraseña?'),
               ),
             ],
           ),
