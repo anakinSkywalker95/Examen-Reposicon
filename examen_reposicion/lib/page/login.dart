@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:app/page/registro.dart'; // Importa la pantalla de registro
+import 'package:app/page/registro.dart';
 import 'package:app/services/usuarios.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -14,6 +13,7 @@ class _LoginScreenState extends State<LoginScreen> {
   String email = '';
   String password = '';
   String error = '';
+  bool isLoading = false; // Estado para controlar la carga
 
   @override
   Widget build(BuildContext context) {
@@ -46,19 +46,31 @@ class _LoginScreenState extends State<LoginScreen> {
                 },
               ),
               SizedBox(height: 20.0),
-              ElevatedButton(
-                onPressed: () async {
-                  if (_formKey.currentState!.validate()) {
-                    dynamic result =
-                        await _auth.signInWithEmailAndPassword(email, password);
-                    if (result == null) {
-                      setState(() => error =
-                          'Error al iniciar sesión. Verifica tus credenciales.');
-                    }
-                  }
-                },
-                child: Text('Iniciar sesión'),
-              ),
+              isLoading // Mostrar un indicador de carga si isLoading es true
+                  ? CircularProgressIndicator()
+                  : ElevatedButton(
+                      onPressed: () async {
+                        if (_formKey.currentState!.validate()) {
+                          setState(() =>
+                              isLoading = true); // Activar el estado de carga
+                          try {
+                            dynamic result = await _auth
+                                .signInWithEmailAndPassword(email, password);
+                            if (result == null) {
+                              setState(() => error =
+                                  'Error al iniciar sesión. Verifica tus credenciales.');
+                              setState(() => isLoading =
+                                  false); // Desactivar el estado de carga
+                            }
+                          } catch (e) {
+                            setState(() => error = e.toString());
+                            setState(() => isLoading =
+                                false); // Desactivar el estado de carga
+                          }
+                        }
+                      },
+                      child: Text('Iniciar sesión'),
+                    ),
               SizedBox(height: 12.0),
               Text(
                 error,
@@ -75,7 +87,7 @@ class _LoginScreenState extends State<LoginScreen> {
               ),
               TextButton(
                 onPressed: () {
-                  // Implementa la funcionalidad de restablecimiento de contraseña aquí
+                  _auth.resetPassword(email); // Restablecer contraseña
                 },
                 child: Text('¿Olvidaste tu contraseña?'),
               ),
