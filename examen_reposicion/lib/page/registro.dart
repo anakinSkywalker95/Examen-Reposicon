@@ -18,7 +18,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Registrar'),
-        backgroundColor: Colors.blue, // Cambia esto al color que prefieras.
       ),
       body: Padding(
         padding: EdgeInsets.all(16.0),
@@ -36,7 +35,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   setState(() => email = val);
                 },
               ),
-              const SizedBox(height: 20.0),
+              SizedBox(height: 20.0),
               TextFormField(
                 decoration: InputDecoration(labelText: 'Contraseña'),
                 obscureText: true,
@@ -47,7 +46,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   setState(() => password = val);
                 },
               ),
-              const SizedBox(height: 20.0),
+              SizedBox(height: 20.0),
               ElevatedButton(
                 onPressed: () async {
                   if (_formKey.currentState!.validate()) {
@@ -65,15 +64,12 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     }
                   }
                 },
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.green, // Cambia esto al color que prefieras.
-                ),
-                child: const Text('Registrar'),
+                child: Text('Registrar'),
               ),
-              const SizedBox(height: 12.0),
+              SizedBox(height: 12.0),
               Text(
                 error,
-                style: const TextStyle(color: Colors.orange, fontSize: 14.0), // Cambia esto al color que prefieras.
+                style: TextStyle(color: Colors.red, fontSize: 14.0),
               ),
             ],
           ),
